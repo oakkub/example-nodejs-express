@@ -42,7 +42,7 @@ jobs:
       - run:
           name: "Build docker images and push to docker hub"
           command: 
-              cp Dockerfile.production Dockerfile
+              cp Dockerfile Dockerfile
               docker build -t oakkub/example-nodejs-circle:latest .
                     docker build -t oakkub/example-nodejs-circle:${CIRCLE_SHA1} .
                     docker push oakkub/example-nodejs-circle:latest
