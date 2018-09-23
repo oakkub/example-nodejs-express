@@ -32,9 +32,21 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+  
       # run tests!
       - run: yarn test
+      - run: setup_remote_docker
+      - run: 
+	  name: "Login to docker"
+          command: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - run:
+          name: "Build docker images and push to docker hub"
+          command: 
+	      cp Dockerfile.production Dockerfile
+	      docker build -t oakkub/example-nodejs-circle:latest .
+              docker build -t oakkub/example-nodejs-circle:${CIRCLE_SHA1} .
+              docker push oakkub/example-nodejs-circle:latest
+              docker push oakkub/example-nodejs-circle:${CIRCLE_SHA1}
       - run: echo "Done!!!!"
 
 
